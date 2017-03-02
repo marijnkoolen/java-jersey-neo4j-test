@@ -10,6 +10,7 @@ import java.io.File;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.shell.ShellSettings;
 
 /**
  * Created by marijn on 16-2-17.
@@ -29,7 +30,10 @@ public class TestApplication extends Application {
     @PostConstruct
     public void initialize() {
         try {
-            db = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(db_location).newGraphDatabase();
+            db = new GraphDatabaseFactory().newEmbeddedDatabaseBuilder(db_location)
+                    .setConfig(ShellSettings.remote_shell_enabled, "true")
+                    .setConfig(ShellSettings.remote_shell_port, "5555")
+                    .newGraphDatabase();
             System.out.println("Neo4j startup succeeded"); // logged in tomcat catalina.out
         } catch (Exception e) {
             e.printStackTrace();
